@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Yuldoshev Faxriddin">
+    <title>Natijalar</title>
+</head>
+<body>
+
+        <!--
+        
+        {% for user in users %}
+        <div><h3>{{user['ip']}} <u> {{user['username']}} </u> qolgan vaqt: {{user['time']}}</h3></div>
+            <div id="textbox" >
+                <textarea name="textarea" id="textarea" placeholder="Text editor...">{{user['content']}}</textarea>
+            </div>
+        {% endfor %}
+        -->
+        {% for user in users %}
+        <div><h3 contenteditable="true">{{user['ip']}} <u> {{user['username']}} </u> qolgan vaqt: {{user['time']}} Jami teglar: {{user['length']}}</h3></div>
+            <ol type="1">
+                {% for tag in user['tags'] %}
+                <li contenteditable="true">{{tag}}</li>
+                {% endfor %}
+            </ol>
+        {% endfor %}
+
+    
+</body>
+</html>

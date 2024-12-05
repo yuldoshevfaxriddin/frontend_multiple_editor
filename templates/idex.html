@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topshiriq</title>
+</head>
+<body>
+    <center>
+        <div id="timer">{{time_limit}}</div>
+            <div class="user-input">
+                <input type="text" name="client" id="username" placeholder="Ismingini kiriting" autofocus>
+                <button id="startButton" >boshlash</button>
+            </div>
+            <div id="textbox" >
+                <textarea name="textarea" id="textarea" placeholder="Text editor..." disabled></textarea>
+            </div>
+        <button type="button" id="endButton" disabled>Yakunlash</button>
+    </center>
+    <style>
+        #timer{
+            font-size: 35px;
+        }
+        #textbox{
+            width: 80vw;
+            height: 60vh;
+        }
+        #textarea{
+            padding: 10px;
+            font-size: 1.5rem;
+            width: 100%;
+            height: 100%;
+	    resize:none;
+        }
+        
+    </style>
+    <script>
+        let timer = document.getElementById("timer");
+        let textarea = document.getElementById("textarea");
+        let endButton = document.getElementById("endButton");
+        let startButton = document.getElementById("startButton");
+        let form = document.getElementById("form");
+        let user_name = document.getElementById("username");
+        let count = parseInt(document.querySelector('#timer').innerText);
+        let time_id = '';
+        let progress = false;
+
+        function sendAjax(username,data){
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                // document.getElementById("demo").innerHTML = this.responseText;
+                alert(this.responseText)
+            }
+            xhttp.open("POST", "/");
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send(`username=${user_name.value}&content=${textarea.value}&time=${count+1}`);
+
+        }
+
+        function sendData(){
+            if(!progress){progress = true;return}
+            clearInterval(time_id)
+            textarea.disabled = true ; 
+            endButton.disabled = true ; 
+            sendAjax(user_name.value,textarea.value);
+        }
+        function countDown(){
+            timer.innerHTML = count ;
+            if(count<1){
+                document.querySelector("body").style.backgroundColor = 'red';
+                sendData();
+            }
+            count--;
+        }
+
+        function start(){
+            if(user_name.value.length < 2){ 
+                return }
+            textarea.disabled = false;
+            endButton.disabled = false;
+            startButton.disabled = true;
+            user_name.disabled = true;
+            textarea.focus();
+            time_id = setInterval(countDown,1000)
+        }
+        startButton.addEventListener('click',start);
+        endButton.addEventListener('click',sendData)
+        </script>
+<!-- 
+    <script>
+        textarea.value = 'data';
+        textarea.disabled = true ; 
+        button.disabled = true ; 
+    </script> -->
+
+</body>
+</html>
